@@ -1,20 +1,12 @@
 package com.esalehi.appconfigdemo.controller;
 
-import com.amazonaws.services.appconfig.*;
-import com.amazonaws.services.appconfig.model.GetConfigurationRequest;
-import com.amazonaws.services.appconfig.model.GetConfigurationResult;
-import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement;
-import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClient;
-import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest;
 import com.esalehi.appconfigdemo.service.AwsDemoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.nio.charset.StandardCharsets;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @RequestMapping("/awsdemo")
 @Controller
@@ -24,9 +16,15 @@ public class DemoController {
     private AwsDemoService awsDemoService;
 
     @RequestMapping("/getappconfig")
-    public ResponseEntity<String> sayHello() {
-
+    public ResponseEntity<String> getConfiguration() {
         return new ResponseEntity<>(awsDemoService.getConfiguration(), HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json", path = "addmetrics")
+    public ResponseEntity addMetrics() {
+        awsDemoService.putMetricsToCW(1.0);
+        return ResponseEntity.ok("metrics put successfully");
+    }
+
 
 }
