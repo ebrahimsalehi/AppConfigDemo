@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/awsdemo")
 @Controller
@@ -20,9 +21,9 @@ public class DemoController {
         return new ResponseEntity<>(awsDemoService.getConfiguration(), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json", path = "addmetrics")
-    public ResponseEntity addMetrics() {
-        awsDemoService.putMetricsToCW(1.0);
+    @RequestMapping(method = RequestMethod.POST, produces = "application/json", path = "putmetric")
+    public ResponseEntity putMetrics(@RequestParam("value") double value) {
+        awsDemoService.setMetricValue(value);
         return ResponseEntity.ok("metrics put successfully");
     }
 
